@@ -1,0 +1,56 @@
+object barrileteCosmico 
+{
+    var destinos = [garlicsSea, silversSea, lastToninas, goodAirs]
+	var filtrarDestinosDestacados = destinos.filter({unDestino = unDestino.precio() > 2000})
+    
+    method destinosDestacados()
+    {
+    	filtrarDestinosDestacados.apply()
+        return self.destinos()
+    method destinos(){return destinos}
+}
+
+object garlicsSea
+{
+    var equipajeImprescindible = ["Caña de Pescar", "Piloto"]
+    var precio = 2500
+
+    method precio()
+    {return precio}
+    method equipajeImprescindible()
+    {return equipajeImprescindible}
+}
+
+object silversSea
+{
+    var equipajeImprescindible = ["Protector Solar", "Equipo de Buceo"]
+    var precio = 1350
+
+    method precio()
+    {return precio}
+    method equipajeImprescindible()
+    {return equipajeImprescindible}
+}
+
+object lastToninas
+{
+    var equipajeImprescindible = ["Vacuna Gripal", "Vacuna B", "Necronomicon"]
+    var precio = 3500
+    
+    method precio()
+    {return precio}
+    method equipajeImprescindible()
+    {return equipajeImprescindible}
+}
+
+object goodAirs
+{
+    var equipajeImprescindible = ["Cerveza", "Protector Solar"]
+    var precio = 1500
+
+    method precio()
+    {return precio}
+    method equipajeImprescindible()
+    {return equipajeImprescindible}
+}
+
