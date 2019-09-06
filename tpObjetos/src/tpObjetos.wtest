@@ -1,4 +1,6 @@
-import tpObjetos.*
+import barrileteCosmico.*
+import destinos.*
+import usuarios.*
 
 test "Obtener los destinos más importantes de Barrilete Cósmico, da como 
 	  resultado una coleccion con Garlic´s Sea y Last Toninas." {
@@ -93,18 +95,19 @@ test "Al obtener los kilometros de PHari tiene 500 kilometros."{
 }
 
 test "pHari puede Volar a Silver's Sea"{
-	assert.that(barrileteCosmico.usuarioPuedeVolar(pHari,silversSea))
-}
-
-test "Al hacer que PHari vuele a Silver 's Sea, Silver's Sea es agregado en su historial."{
-	barrileteCosmico.volarAUnDestino(pHari, silversSea)
-	assert.that(pHari.conoceDestino(silversSea))
+	assert.that(pHari.puedeVolarA(silversSea))
 }
 
 test "Al hacer que PHari vuele a Silver 's Sea, PHari tiene en su cuenta $150."{
-	barrileteCosmico.volarAUnDestino(pHari, silversSea)
+	pHari.volarA(silversSea)
 	assert.equals(150,pHari.saldo())
 }
+
+test "Al hacer que PHari vuele a Silver 's Sea, Silver's Sea es agregado en su historial."{
+	pHari.volarA(silversSea)
+	assert.that(pHari.conoceDestino(silversSea))
+}
+
 
 
 
