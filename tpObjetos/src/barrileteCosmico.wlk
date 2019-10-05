@@ -1,32 +1,49 @@
-import destinos.*
-import usuarios.*
+import Viaje.*
 
 object barrileteCosmico{
 	
-    var destinos = #{garlicsSea, silversSea, lastToninas, goodAirs}
+    var localidades = #{}
+    var mediosDeTransporte = #{}
+    
+    method localidades() = localidades
+    method localidades(unasLocalidades){
+    	localidades = unasLocalidades
+    }
+    
+    method agregarMedioDeTransporte(unMedio){
+    	mediosDeTransporte.add(unMedio)
+    }
+    
+  	method agregarLocalidad(unaLocalidad){
+  		localidades.add(unaLocalidad)
+  	}
     
     method destinosMasImportantes(){
-        return destinos.filter({destino => destino.esDestacado()})
+        return localidades.filter({localidad => localidad.esDestacado()})
     }
     
     method aplicarDescuentos(porcentaje){
-    	destinos.forEach({destino => destino.aplicarDescuento(porcentaje)})
+    	localidades.forEach({localidad => localidad.aplicarDescuento(porcentaje)})
     }
     
     method esEmpresaExtrema(){
-    	return destinos.any({destino => destino.esPeligroso()})
+    	return localidades.any({localidad => localidad.esPeligroso()})
     }
     
     method obtenerDestinosMasPeligrosos(){
-    	return destinos.filter({destino => destino.esPeligroso()})
+    	return localidades.filter({localidad => localidad.esPeligroso()})
     }
     
     method cartaDeDestinos() {
-    	return destinos.map({destino => destino.nombre()})
+    	return localidades.map({localidad => localidad.nombre()})
     }
     
-    method destinos() = destinos
-    
     method obtenerLosKilometrosDe(usuario) = usuario.obtenerKilometros()
+    
+    method armarViaje(usuario, destino){
+    	const medioDeTransporte = mediosDeTransporte.anyOne()
+    	const origen = usuario.origen()
+    	usuario.viajar(new Viaje(origen, destino, medioDeTransporte))
+    }
     
 }

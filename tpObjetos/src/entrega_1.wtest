@@ -1,0 +1,140 @@
+import barrileteCosmico.*
+import Localidad.*
+import Usuario.*
+
+describe "Tests sobre la primera entrega del TP de Objetos"{
+	
+	var garlicsSea
+	var silversSea
+	var lastToninas
+	var goodAirs
+	
+	// .. Hay que ver si hacemos dos archivos separados para las pruebas (primera y segunda entrega)
+	
+	fixture {
+		
+		garlicsSea = new Localidad("Garlic´s Sea", ["Caña de Pescar", "Piloto"], 2500, 0)
+		silversSea = new Localidad("Silver's Sea", ["Protector Solar", "Equipo de Buceo"], 1350, 0)
+		lastToninas = new Localidad("Last Toninas", ["Vacuna Gripal", "Vacuna B", "Necronomicon"], 3500, 0)
+		goodAirs = new Localidad("Good Airs", ["Cerveza", "Protector Solar"],  1500, 0)
+		
+		barrileteCosmico.localidades(#{garlicsSea, silversSea, lastToninas, goodAirs})
+		
+	}
+	
+	// Pruebas primer entrega del TP
+	
+	test "Obtener los destinos más importantes de Barrilete Cósmico, da como 
+	  resultado una coleccion con Garlic´s Sea y Last Toninas." {
+		assert.equals(#{garlicsSea, lastToninas}, barrileteCosmico.destinosMasImportantes())
+	}
+
+	test "Al aplicarle un 25% de descuento a Last Toninas, el precio de Last Toninas es de $2625."{
+		lastToninas.aplicarDescuento(25)
+		assert.equals(2625, lastToninas.precio())
+	}
+
+	test "Al aplicarle un 25% de descuento a Last Toninas, Last Toninas 
+		  tiene al certificado de descuento como parte de su equipaje imprescindible."{
+		lastToninas.aplicarDescuento(25)
+		assert.that(lastToninas.contieneEquipajeImprescindible("Certificado de descuento"))
+	}
+
+	test "Al averiguar si Silver's Sea es un destino peligroso, se obtiene que no lo es."{
+		assert.notThat(silversSea.esPeligroso())
+	}
+
+	test "Al aplicar un descuento del 15% a todos los destinos de Barrilete Cósmico, el precio de Garlic´s sea: $2125"{
+		barrileteCosmico.aplicarDescuentos(15)
+		assert.equals(2125, garlicsSea.precio())
+	}
+
+	test "Al aplicar un descuento del 15% a todos los destinos de Barrilete Cósmico, el precio de Silver's Sea: $1147.5"{
+		barrileteCosmico.aplicarDescuentos(15)
+		assert.equals(1147.5, silversSea.precio())
+	}
+
+	test "Al aplicar un descuento del 15% a todos los destinos de Barrilete Cósmico, el precio de Last Toninas: $2975"{
+		barrileteCosmico.aplicarDescuentos(15)
+		assert.equals(2975, lastToninas.precio())
+	}
+
+	test "Al aplicar un descuento del 15% a todos los destinos de Barrilete Cósmico, el precio de Good Airs: $1275"{
+		barrileteCosmico.aplicarDescuentos(15)
+		assert.equals(1275, goodAirs.precio())
+	}
+
+	test "Al aplicar un descuento del 15% a todos los destinos de Barrilete Cósmico, Garlic´s sea posee el certificado de descuento."{
+		barrileteCosmico.aplicarDescuentos(15)
+		assert.that(garlicsSea.contieneEquipajeImprescindible("Certificado de descuento"))
+	}
+
+	test "Al aplicar un descuento del 15% a todos los destinos de Barrilete Cósmico, Silver's Sea posee el certificado de descuento."{
+		barrileteCosmico.aplicarDescuentos(15)
+		assert.that(silversSea.contieneEquipajeImprescindible("Certificado de descuento"))
+	}
+
+	test "Al aplicar un descuento del 15% a todos los destinos de Barrilete Cósmico, Last Toninas posee el certificado de descuento."{
+		barrileteCosmico.aplicarDescuentos(15)
+		assert.that(lastToninas.contieneEquipajeImprescindible("Certificado de descuento"))
+	}
+
+	test "Al aplicar un descuento del 15% a todos los destinos de Barrilete Cósmico, Good Airs posee el certificado de descuento."{
+		barrileteCosmico.aplicarDescuentos(15)
+		assert.that(goodAirs.contieneEquipajeImprescindible("Certificado de descuento"))
+	}
+
+	test "Obtener los destinos más peligrosos hasta el momento, devuelve una coleccion con Last Toninas."{
+		assert.equals(#{lastToninas}, barrileteCosmico.obtenerDestinosMasPeligrosos())
+	}	
+
+	test "Al intentar saber si Barrilete Cósmico es una empresa extrema, si lo es" {
+		assert.that(barrileteCosmico.esEmpresaExtrema())
+	}
+
+	test "Al conocer la carta de destinos de Barrilete Cósmico se obtiene una coleccion con los nombres de los destinos
+		  y esta contiene Last Toninas." {
+		assert.that(barrileteCosmico.cartaDeDestinos().contains("Last Toninas"))
+	}
+
+	test "Al conocer la carta de destinos de Barrilete Cósmico se obtiene una coleccion con los nombres de los destinos
+		  y esta contiene Silver's Sea." {
+		assert.that(barrileteCosmico.cartaDeDestinos().contains("Silver's Sea"))
+	}
+
+	test "Al conocer la carta de destinos de Barrilete Cósmico se obtiene una coleccion con los nombres de los destinos
+		  y esta contiene Garlic's Sea." {
+		assert.that(barrileteCosmico.cartaDeDestinos().contains("Garlic´s Sea"))
+	}
+
+	test "Al conocer la carta de destinos de Barrilete Cósmico se obtiene una coleccion con los nombres de los destinos
+		  y esta contiene Good Airs." {
+		assert.that(barrileteCosmico.cartaDeDestinos().contains("Good Airs"))
+	}
+
+	/* 
+	
+	Estas pruebas no se incluyen porque este comportamiento cambio, hay que testearlo en otras pruebas
+	para la segunda entrega
+	
+	test "Al obtener los kilometros de PHari tiene 500 kilometros."{
+		assert.equals(500, pHari.obtenerKilometros())
+	}
+
+	test "pHari puede Volar a Silver's Sea"{
+		assert.that(pHari.puedeVolarA(silversSea))
+	}
+
+	test "Al hacer que PHari vuele a Silver 's Sea, PHari tiene en su cuenta $150."{
+		pHari.volarA(silversSea)
+		assert.equals(150,pHari.saldo())
+	}
+
+	test "Al hacer que PHari vuele a Silver 's Sea, Silver's Sea es agregado en su historial."{
+		pHari.volarA(silversSea)
+		assert.that(pHari.conoceDestino(silversSea))
+	}
+
+	*/
+	
+}

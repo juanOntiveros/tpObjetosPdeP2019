@@ -1,0 +1,161 @@
+import Localidad.*
+import MedioDeTransporte.*
+import Viaje.* 
+import Usuario.*
+import barrileteCosmico.*
+
+describe "Tests sobre la segunda entrega del TP de Objetos"{
+	
+	var lasHeras
+	var caba	
+	var marDelPlata
+	var miami
+	var cabaAMiami
+	var micro
+	var lasHerasACaba
+	var	cabaALasHeras
+	var pHari
+	var avion
+	var cabaAMarDelPlata
+	
+	fixture {
+		lasHeras = new Localidad("General Las Heras", [], 500, 87)
+		caba = new Localidad("CABA", [], 1500, 187)
+		micro = new MedioDeTransporte(2,20)
+		lasHerasACaba = new Viaje(lasHeras, caba, micro)
+		cabaALasHeras = new Viaje(caba, lasHeras, micro)
+		
+		marDelPlata = new Localidad("Mar Del Plata", [], 2000, 400)
+		avion = new MedioDeTransporte(1, 10)
+		cabaAMarDelPlata = new Viaje(caba, marDelPlata,avion)
+		pHari = new Usuario("Pablo Hari", 7000,#{},[lasHerasACaba],caba)
+		
+		miami = new Localidad("Miami", [], 5000, 10000)
+		cabaAMiami = new Viaje(caba,miami,micro)
+	}
+	
+	test "Si General Las Heras se encuentra en el kilómetro 87 y CABA en el kilómetro 187. 
+		La distancia de General Las Heras a CABA es de 100 kilómetros. " {
+		assert.equals(100, lasHeras.distanciaA(caba))
+	}
+	
+	test "Si General Las Heras se encuentra en el kilómetro 87 y CABA en el kilómetro 187. 
+		La distancia de CABA a General Las Heras es de 100 kilómetros. "	{
+		assert.equals(100, caba.distanciaA(lasHeras))
+	}
+	
+	test "Si CABA se encuentra en el kilometro 187 y Mar Del Plata en el 400,
+		La distancia de CABA a Mar del Plata es de 213 kilometros"{
+		assert.equals(213, caba.distanciaA(marDelPlata))		
+	}
+	
+	test "Si CABA se encuentra en el kilometro 187 y Miami en el 10000,
+		La distancia de CABA a Mar del Plata es de 213 kilometros"{
+		assert.equals(9813, caba.distanciaA(miami))		
+	}
+	
+	test "El costo de los kilometros a recorrer desde General Las Heras a CABA, mediante
+		micro es de 2000"{
+		assert.equals(2000,lasHerasACaba.costoDeLosKilometrosARecorrer())			
+	}
+	
+	test "El costo de los kilometros a recorrer desde CABA a General Las Heras, mediante
+		micro es de 2000"{
+		assert.equals(2000,cabaALasHeras.costoDeLosKilometrosARecorrer())			
+	}
+	
+	test "El precio del Viaje desde General Las Heras a CABA, mediante micro es de 3500"{
+		assert.equals(3500,lasHerasACaba.precio())	
+	}
+	
+	test "El precio del Viaje desde CABA a General Las Heras, mediante micro es de 2500"{
+		assert.equals(2500,cabaALasHeras.precio())	
+	}
+	
+	test "El precio del Viaje desde CABA a Mar Del Plata, mediante avion es de 4130"{
+		assert.equals(4130,cabaAMarDelPlata.precio())	
+	}
+	
+	test "El precio del Viaje desde CABA a Miami, mediante micro es de 201260"{
+		assert.equals(201260,cabaAMiami.precio())
+	}
+	
+	test "pHari tiene una distancia de 100 kilometros entre sus viajes iniciales"{
+		assert.equals(100, pHari.obtenerKilometros())
+	}
+	
+	test "pHari tiene el mismo origen necesario para viajar desde CABA a Mar Del Plata"{
+		assert.that(pHari.tieneElMismoOrigen(cabaAMarDelPlata))
+	}
+	
+	test "pHari puede viajar desde CABA a Mar Del Plata, ya que su saldo es suficiente"{
+		assert.that(pHari.puedeViajar(cabaAMarDelPlata))
+	}
+	
+	test "pHari no puede viajar desde CABA a Miami ya que su saldo es insuficiente"{
+		assert.notThat(pHari.puedeViajar(cabaAMiami))
+	}
+	
+	test "Al viajar desde CABA a Mar Del Plata, pHari tiene entre sus viajes ese viaje"{
+		pHari.viajar(cabaAMarDelPlata)
+		assert.that(pHari.viajes().contains(cabaAMarDelPlata))
+	}
+	
+	test "Al viajar desde CABA a Mar Del Plata, pHari tiene un saldo de 870"{
+		pHari.viajar(cabaAMarDelPlata)
+		assert.equals(2870, pHari.saldo())
+	}
+	
+	test "Al viajar desde CABA a Mar Del Plata, pHari se encuentra en Mar Del Plata como su nuevo origen"{
+		pHari.viajar(cabaAMarDelPlata)
+		assert.equals(marDelPlata, pHari.origen())
+	}
+	
+	test "Al viajar desde CABA a Mar Del Plata, pHari tiene una distancia de 313 kilometros 
+		entre todos sus viajes hechos"{
+		pHari.viajar(cabaAMarDelPlata)
+		assert.equals(313, pHari.obtenerKilometros())
+	}
+	
+	test "barrileteCosmico armar un viaje desde CABA a Mar Del Plata, hace que pHari viaje efectivamente"{
+		barrileteCosmico.agregarMedioDeTransporte(avion)
+		barrileteCosmico.agregarMedioDeTransporte(micro)
+		barrileteCosmico.armarViaje(pHari, marDelPlata)
+		assert.equals(2, pHari.viajes().size())
+	}
+	
+	test "barrileteCosmico armar un viaje desde CABA a Mar Del Plata, pHari tiene de origen a Mar Del Plata"{
+		barrileteCosmico.agregarMedioDeTransporte(avion)
+		barrileteCosmico.agregarMedioDeTransporte(micro)
+		barrileteCosmico.armarViaje(pHari, marDelPlata)
+		assert.equals(marDelPlata, pHari.origen())
+	}
+	
+	test "barrileteCosmico armar un viaje desde CABA a Las Heras, hace que pHari viaje efectivamente"{
+		barrileteCosmico.agregarMedioDeTransporte(avion)
+		barrileteCosmico.agregarMedioDeTransporte(micro)
+		barrileteCosmico.armarViaje(pHari, lasHeras)
+		assert.equals(2, pHari.viajes().size())
+	}
+	
+	test "barrileteCosmico armar un viaje desde CABA a Las Heras, pHari tiene de origen a Las Heras"{
+		barrileteCosmico.agregarMedioDeTransporte(avion)
+		barrileteCosmico.agregarMedioDeTransporte(micro)
+		barrileteCosmico.armarViaje(pHari, lasHeras)
+		assert.equals(lasHeras, pHari.origen())
+	}
+	
+	test "barrileteCosmico armar un viaje desde CABA a Miami, hace que pHari no viaje"{
+		barrileteCosmico.agregarMedioDeTransporte(avion)
+		barrileteCosmico.agregarMedioDeTransporte(micro)
+		barrileteCosmico.armarViaje(pHari, miami)
+		assert.equals(1, pHari.viajes().size())
+	}
+	
+	test "barrileteCosmico armar un viaje desde CABA a Miami, pHari tiene de origen a CABA"{
+		barrileteCosmico.agregarMedioDeTransporte(avion)
+		barrileteCosmico.agregarMedioDeTransporte(micro)
+		barrileteCosmico.armarViaje(pHari, miami)
+		assert.equals(caba, pHari.origen())
+	}
+}
