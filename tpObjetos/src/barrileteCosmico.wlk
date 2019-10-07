@@ -43,7 +43,7 @@ object barrileteCosmico{
     method armarViaje(usuario, destino){
     	const medioDeTransporte = mediosDeTransporte.anyOne()
     	const origen = usuario.origen()
-    	usuario.viajar(new Viaje(origen, destino, medioDeTransporte))
+    	return new Viaje(origen, destino, medioDeTransporte) 
     }
     
 }

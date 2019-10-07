@@ -36,7 +36,7 @@ class Localidad{
     method distanciaA(otraLocalidad){
     	const maximo = self.kilometro().max(otraLocalidad.kilometro())
     	const minimo = self.kilometro().min(otraLocalidad.kilometro())
-    	return maximo - minimo
+    	return maximo - minimo // TODO absolute
     }
     
 }

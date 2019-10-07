@@ -96,13 +96,15 @@ describe "Tests sobre la segunda entrega del TP de Objetos"{
 		assert.notThat(pHari.puedeViajar(cabaAMiami))
 	}
 	
+	// TODO arreglar los tests
+	
 	test "Al viajar desde CABA a Mar Del Plata, pHari tiene entre sus viajes ese viaje"{
 		pHari.viajar(cabaAMarDelPlata)
 		assert.that(pHari.viajes().contains(cabaAMarDelPlata))
 	}
 	
 	test "Al viajar desde CABA a Mar Del Plata, pHari tiene un saldo de 870"{
-		pHari.viajar(cabaAMarDelPlata)
+		pHari.viajar(marDelPlata)
 		assert.equals(2870, pHari.saldo())
 	}
 	

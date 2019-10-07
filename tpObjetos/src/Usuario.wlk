@@ -1,3 +1,5 @@
+import barrileteCosmico.*
+
 class Usuario{
 	
 	var property nombreDeUsuario
@@ -39,8 +41,9 @@ class Usuario{
 		return saldo >= unViaje.precio()
 	}
 	
-	method viajar(unViaje){
-		if (self.tieneElMismoOrigen(unViaje) && self.puedeViajar(unViaje)){
+	method viajar(unaLocalidad){
+		const unViaje = barrileteCosmico.armarViaje(self,unaLocalidad) 
+		if (self.puedeViajar(unViaje)){ // TODO excepciones 
 			viajes.add(unViaje)
 			self.origen(unViaje.destino())
 			self.restarSaldo(unViaje.precio())
