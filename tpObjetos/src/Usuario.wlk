@@ -1,4 +1,6 @@
 import barrileteCosmico.*
+import excepciones.NoSePuedeViajarException.*
+
 
 class Usuario{
 	
@@ -43,11 +45,10 @@ class Usuario{
 	
 	method viajar(unaLocalidad){
 		const unViaje = barrileteCosmico.armarViaje(self,unaLocalidad) 
-		if (self.puedeViajar(unViaje)){ // TODO excepciones 
-			viajes.add(unViaje)
-			self.origen(unViaje.destino())
-			self.restarSaldo(unViaje.precio())
-		}
+		if (!self.puedeViajar(unViaje)) throw new NoSePuedeViajarException(message = "El usuario no tiene el saldo suficiente para viajar.")
+		viajes.add(unViaje)
+		self.origen(unViaje.destino())
+		self.restarSaldo(unViaje.precio())
 	}
 	
 }

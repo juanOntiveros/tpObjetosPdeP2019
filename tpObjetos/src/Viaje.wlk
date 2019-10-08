@@ -10,13 +10,8 @@ class Viaje{
 		medioDeTransporte = unMedioDeTransporte
 	}
 
-	method costoDeLosKilometrosARecorrer(){
-		return self.distanciaARecorrer() * medioDeTransporte.costoKilometro() // TODO delegar calculo del costo de 
-																			  //los kilometros para el medio de transporte
-	}
-
 	method precio(){
-		return self.costoDeLosKilometrosARecorrer() + destino.precio()
+		return medioDeTransporte.costoDeLosKilometrosARecorrer(self.distanciaARecorrer()) + destino.precio()
 	}
 	
 	method distanciaARecorrer(){

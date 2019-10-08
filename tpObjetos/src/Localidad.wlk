@@ -34,9 +34,8 @@ class Localidad{
     method esDestacado() = precio > 2000
     
     method distanciaA(otraLocalidad){
-    	const maximo = self.kilometro().max(otraLocalidad.kilometro())
-    	const minimo = self.kilometro().min(otraLocalidad.kilometro())
-    	return maximo - minimo // TODO absolute
+    	const diferencia = self.kilometro() - otraLocalidad.kilometro()
+    	return diferencia.abs()
     }
     
 }

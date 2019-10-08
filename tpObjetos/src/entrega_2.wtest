@@ -56,12 +56,14 @@ describe "Tests sobre la segunda entrega del TP de Objetos"{
 	
 	test "El costo de los kilometros a recorrer desde General Las Heras a CABA, mediante
 		micro es de 2000"{
-		assert.equals(2000,lasHerasACaba.costoDeLosKilometrosARecorrer())			
+		const distancia = lasHeras.distanciaA(caba)
+		assert.equals(2000,micro.costoDeLosKilometrosARecorrer(distancia))			
 	}
 	
 	test "El costo de los kilometros a recorrer desde CABA a General Las Heras, mediante
 		micro es de 2000"{
-		assert.equals(2000,cabaALasHeras.costoDeLosKilometrosARecorrer())			
+		const distancia = caba.distanciaA(lasHeras)
+		assert.equals(2000,micro.costoDeLosKilometrosARecorrer(distancia))			
 	}
 	
 	test "El precio del Viaje desde General Las Heras a CABA, mediante micro es de 3500"{
@@ -96,68 +98,64 @@ describe "Tests sobre la segunda entrega del TP de Objetos"{
 		assert.notThat(pHari.puedeViajar(cabaAMiami))
 	}
 	
-	// TODO arreglar los tests
-	
-	test "Al viajar desde CABA a Mar Del Plata, pHari tiene entre sus viajes ese viaje"{
-		pHari.viajar(cabaAMarDelPlata)
-		assert.that(pHari.viajes().contains(cabaAMarDelPlata))
+	test "barrileteCosmico armar un viaje desde CABA a Mar Del Plata en avion para pHari, 
+		hace que el viaje tenga el mismo origen que pHari"{
+		barrileteCosmico.agregarMedioDeTransporte(avion)
+		barrileteCosmico.armarViaje(pHari, marDelPlata)
+		assert.equals(pHari.origen(), barrileteCosmico.armarViaje(pHari, marDelPlata).origen())
 	}
 	
-	test "Al viajar desde CABA a Mar Del Plata, pHari tiene un saldo de 870"{
+	test "barrileteCosmico armar un viaje desde CABA a Mar Del Plata en avion para pHari, 
+		hace que el viaje tenga el destino solicitado"{
+		barrileteCosmico.agregarMedioDeTransporte(avion)
+		barrileteCosmico.armarViaje(pHari, marDelPlata)
+		assert.equals(marDelPlata, barrileteCosmico.armarViaje(pHari, marDelPlata).destino())
+	}
+	
+	test "barrileteCosmico armar un viaje desde CABA a Mar Del Plata en avion o micro para pHari, 
+		hace que el viaje tenga alguno de estos medios de transporte"{
+		barrileteCosmico.agregarMedioDeTransporte(avion)
+		barrileteCosmico.agregarMedioDeTransporte(micro)
+		barrileteCosmico.armarViaje(pHari, marDelPlata)
+		assert.that(#{avion, micro}.contains(barrileteCosmico.armarViaje(pHari, marDelPlata).medioDeTransporte()))
+	}
+	
+	test "Al viajar desde CABA a Mar Del Plata mediante avion, pHari tiene un saldo de 870"{
+		barrileteCosmico.agregarMedioDeTransporte(avion)
 		pHari.viajar(marDelPlata)
 		assert.equals(2870, pHari.saldo())
 	}
 	
-	test "Al viajar desde CABA a Mar Del Plata, pHari se encuentra en Mar Del Plata como su nuevo origen"{
-		pHari.viajar(cabaAMarDelPlata)
+	test "Al viajar desde CABA a Mar Del Plata mediante avion, pHari se encuentra en Mar Del Plata como su nuevo origen"{
+		barrileteCosmico.agregarMedioDeTransporte(avion)
+		pHari.viajar(marDelPlata)
 		assert.equals(marDelPlata, pHari.origen())
 	}
 	
-	test "Al viajar desde CABA a Mar Del Plata, pHari tiene una distancia de 313 kilometros 
+	test "Al viajar desde CABA a Mar Del Plata mediante avion, pHari tiene una distancia de 313 kilometros 
 		entre todos sus viajes hechos"{
-		pHari.viajar(cabaAMarDelPlata)
+		barrileteCosmico.agregarMedioDeTransporte(avion)
+		pHari.viajar(marDelPlata)
 		assert.equals(313, pHari.obtenerKilometros())
 	}
 	
-	test "barrileteCosmico armar un viaje desde CABA a Mar Del Plata, hace que pHari viaje efectivamente"{
+	test "Al viajar desde CABA a Mar Del Plata mediante avion, pHari tiene dos viajes hechos"{
 		barrileteCosmico.agregarMedioDeTransporte(avion)
-		barrileteCosmico.agregarMedioDeTransporte(micro)
-		barrileteCosmico.armarViaje(pHari, marDelPlata)
+		pHari.viajar(marDelPlata)
 		assert.equals(2, pHari.viajes().size())
 	}
 	
-	test "barrileteCosmico armar un viaje desde CABA a Mar Del Plata, pHari tiene de origen a Mar Del Plata"{
+	test "Luego de viajar desde CABA a Mar Del Plata mediante avion, pHari intenta nuevamente volver a caba 
+		mediante avion y lanza excepcion porque no tiene saldo suficiente"{
 		barrileteCosmico.agregarMedioDeTransporte(avion)
-		barrileteCosmico.agregarMedioDeTransporte(micro)
-		barrileteCosmico.armarViaje(pHari, marDelPlata)
-		assert.equals(marDelPlata, pHari.origen())
+		pHari.viajar(marDelPlata)
+		assert.throwsException({ pHari.viajar(caba) })
 	}
 	
-	test "barrileteCosmico armar un viaje desde CABA a Las Heras, hace que pHari viaje efectivamente"{
-		barrileteCosmico.agregarMedioDeTransporte(avion)
+	test "Al tratar de viajar desde CABA hasta Miami mediante micro, se lanza una excepcion ya que no
+		posee el sueldo necesario"{
 		barrileteCosmico.agregarMedioDeTransporte(micro)
-		barrileteCosmico.armarViaje(pHari, lasHeras)
-		assert.equals(2, pHari.viajes().size())
+		assert.throwsException({ pHari.viajar(miami) })	
 	}
 	
-	test "barrileteCosmico armar un viaje desde CABA a Las Heras, pHari tiene de origen a Las Heras"{
-		barrileteCosmico.agregarMedioDeTransporte(avion)
-		barrileteCosmico.agregarMedioDeTransporte(micro)
-		barrileteCosmico.armarViaje(pHari, lasHeras)
-		assert.equals(lasHeras, pHari.origen())
-	}
-	
-	test "barrileteCosmico armar un viaje desde CABA a Miami, hace que pHari no viaje"{
-		barrileteCosmico.agregarMedioDeTransporte(avion)
-		barrileteCosmico.agregarMedioDeTransporte(micro)
-		barrileteCosmico.armarViaje(pHari, miami)
-		assert.equals(1, pHari.viajes().size())
-	}
-	
-	test "barrileteCosmico armar un viaje desde CABA a Miami, pHari tiene de origen a CABA"{
-		barrileteCosmico.agregarMedioDeTransporte(avion)
-		barrileteCosmico.agregarMedioDeTransporte(micro)
-		barrileteCosmico.armarViaje(pHari, miami)
-		assert.equals(caba, pHari.origen())
-	}
 }

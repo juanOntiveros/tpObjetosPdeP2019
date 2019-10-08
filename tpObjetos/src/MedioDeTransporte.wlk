@@ -8,4 +8,6 @@ class MedioDeTransporte{
 		costoKilometro = costo
 	}
 	
+	method costoDeLosKilometrosARecorrer(unaDistancia) = unaDistancia * costoKilometro
+	
 }
