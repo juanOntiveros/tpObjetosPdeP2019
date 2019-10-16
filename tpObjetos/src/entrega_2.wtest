@@ -3,6 +3,7 @@ import MedioDeTransporte.*
 import Viaje.* 
 import Usuario.*
 import barrileteCosmico.*
+import excepciones.NoSePuedeViajarException.*
 
 describe "Tests sobre la segunda entrega del TP de Objetos"{
 	
@@ -101,23 +102,23 @@ describe "Tests sobre la segunda entrega del TP de Objetos"{
 	test "barrileteCosmico armar un viaje desde CABA a Mar Del Plata en avion para pHari, 
 		hace que el viaje tenga el mismo origen que pHari"{
 		barrileteCosmico.agregarMedioDeTransporte(avion)
-		barrileteCosmico.armarViaje(pHari, marDelPlata)
-		assert.equals(pHari.origen(), barrileteCosmico.armarViaje(pHari, marDelPlata).origen())
+		const viajeAMarDelPlata = barrileteCosmico.armarViaje(pHari, marDelPlata)
+		assert.equals(pHari.origen(), viajeAMarDelPlata.origen())
 	}
 	
 	test "barrileteCosmico armar un viaje desde CABA a Mar Del Plata en avion para pHari, 
 		hace que el viaje tenga el destino solicitado"{
 		barrileteCosmico.agregarMedioDeTransporte(avion)
-		barrileteCosmico.armarViaje(pHari, marDelPlata)
-		assert.equals(marDelPlata, barrileteCosmico.armarViaje(pHari, marDelPlata).destino())
+		const viajeAMarDelPlata = barrileteCosmico.armarViaje(pHari, marDelPlata)
+		assert.equals(marDelPlata, viajeAMarDelPlata.destino())
 	}
 	
 	test "barrileteCosmico armar un viaje desde CABA a Mar Del Plata en avion o micro para pHari, 
 		hace que el viaje tenga alguno de estos medios de transporte"{
 		barrileteCosmico.agregarMedioDeTransporte(avion)
 		barrileteCosmico.agregarMedioDeTransporte(micro)
-		barrileteCosmico.armarViaje(pHari, marDelPlata)
-		assert.that(#{avion, micro}.contains(barrileteCosmico.armarViaje(pHari, marDelPlata).medioDeTransporte()))
+		const viajeAMarDelPlata = barrileteCosmico.armarViaje(pHari, marDelPlata)
+		assert.that(#{avion, micro}.contains(viajeAMarDelPlata.medioDeTransporte()))
 	}
 	
 	test "Al viajar desde CABA a Mar Del Plata mediante avion, pHari tiene un saldo de 870"{
@@ -149,13 +150,13 @@ describe "Tests sobre la segunda entrega del TP de Objetos"{
 		mediante avion y lanza excepcion porque no tiene saldo suficiente"{
 		barrileteCosmico.agregarMedioDeTransporte(avion)
 		pHari.viajar(marDelPlata)
-		assert.throwsException({ pHari.viajar(caba) })
+		assert.throwsExceptionLike(new NoSePuedeViajarException(message = "El usuario no tiene el saldo suficiente para viajar."),{ pHari.viajar(caba) })
 	}
 	
 	test "Al tratar de viajar desde CABA hasta Miami mediante micro, se lanza una excepcion ya que no
 		posee el sueldo necesario"{
 		barrileteCosmico.agregarMedioDeTransporte(micro)
-		assert.throwsException({ pHari.viajar(miami) })	
+		assert.throwsExceptionLike(new NoSePuedeViajarException(message = "El usuario no tiene el saldo suficiente para viajar."),{ pHari.viajar(miami) })	
 	}
 	
 }
