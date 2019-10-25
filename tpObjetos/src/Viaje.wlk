@@ -11,7 +11,7 @@ class Viaje{
 	}
 
 	method precio(){
-		return medioDeTransporte.costoDeLosKilometrosARecorrer(self.distanciaARecorrer()) + destino.precio()
+		return medioDeTransporte.costoDeLaDistanciaARecorrer(self.distanciaARecorrer()) + destino.precio()
 	}
 	
 	method distanciaARecorrer(){

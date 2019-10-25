@@ -4,6 +4,7 @@ import Viaje.*
 import Usuario.*
 import barrileteCosmico.*
 import excepciones.NoSePuedeViajarException.*
+import Perfil.*
 
 describe "Tests sobre la segunda entrega del TP de Objetos"{
 	
@@ -29,7 +30,7 @@ describe "Tests sobre la segunda entrega del TP de Objetos"{
 		marDelPlata = new Localidad("Mar Del Plata", [], 2000, 400)
 		avion = new MedioDeTransporte(1, 10)
 		cabaAMarDelPlata = new Viaje(caba, marDelPlata,avion)
-		pHari = new Usuario("Pablo Hari", 7000,#{},[lasHerasACaba],caba)
+		pHari = new Usuario("Pablo Hari", 7000,#{},[lasHerasACaba],caba, perfilFamiliar)
 		
 		miami = new Localidad("Miami", [], 5000, 10000)
 		cabaAMiami = new Viaje(caba,miami,micro)
@@ -58,13 +59,13 @@ describe "Tests sobre la segunda entrega del TP de Objetos"{
 	test "El costo de los kilometros a recorrer desde General Las Heras a CABA, mediante
 		micro es de 2000"{
 		const distancia = lasHeras.distanciaA(caba)
-		assert.equals(2000,micro.costoDeLosKilometrosARecorrer(distancia))			
+		assert.equals(2000,micro.costoDeLaDistanciaARecorrer(distancia))			
 	}
 	
 	test "El costo de los kilometros a recorrer desde CABA a General Las Heras, mediante
 		micro es de 2000"{
 		const distancia = caba.distanciaA(lasHeras)
-		assert.equals(2000,micro.costoDeLosKilometrosARecorrer(distancia))			
+		assert.equals(2000,micro.costoDeLaDistanciaARecorrer(distancia))			
 	}
 	
 	test "El precio del Viaje desde General Las Heras a CABA, mediante micro es de 3500"{

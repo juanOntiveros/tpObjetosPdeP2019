@@ -1,6 +1,6 @@
 import barrileteCosmico.*
 import excepciones.NoSePuedeViajarException.*
-
+import Perfil.*
 
 class Usuario{
 	
@@ -9,13 +9,15 @@ class Usuario{
 	var property usuariosSeguidos
 	var property viajes
 	var property origen
+	var property perfil
 	
-	constructor(unNombre, unSaldo, unosUsuarios, unosViajes, unOrigen){
+	constructor(unNombre, unSaldo, unosUsuarios, unosViajes, unOrigen, unPerfil){
 		nombreDeUsuario = unNombre
 		saldo = unSaldo
 		usuariosSeguidos = unosUsuarios
 		viajes = unosViajes
 		origen = unOrigen
+		perfil = unPerfil
 	}
 	
 	method restarSaldo(valor){
@@ -41,6 +43,10 @@ class Usuario{
 	
 	method puedeViajar(unViaje){
 		return saldo >= unViaje.precio()
+	}
+	
+	method elegirMedioDeTransporte(unosMedios, unaDistancia){
+		return perfil.elegirMedioDeTransporte(unosMedios, unaDistancia, saldo)
 	}
 	
 	method viajar(unaLocalidad){

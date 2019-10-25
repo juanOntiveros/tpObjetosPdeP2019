@@ -1,0 +1,160 @@
+import Localidad.*
+import MedioDeTransporte.*
+import Viaje.* 
+import Usuario.*
+import barrileteCosmico.*
+import excepciones.NoSePuedeViajarException.*
+import Perfil.*
+import Turbina.*
+
+describe "Tests sobre la segunda entrega del TP de Objetos"{
+	
+	var playa 
+	var primerMontania
+	var segundaMontania
+	var primerCiudadHistorica
+	var segundaCiudadHistorica
+	
+	var primerTurbina
+	var segundaTurbina
+	var avion
+	var micro
+	var tren
+	var titanic
+	
+	var pHari
+	
+	fixture{
+		playa = new Playa("Playa", [], 0, 0)
+		primerMontania = new Montania("Primer Montania", ["Vacuna BCG"], 0, 0, 4000)
+		segundaMontania = new Montania("Segunda Montania", ["Vacuna BCG"], 0, 0, 5001)
+		primerCiudadHistorica = new CiudadHistorica("Primer Ciudad", [], 3000, 210, [])
+		segundaCiudadHistorica = new CiudadHistorica("Segunda Ciudad", ["Asistencia al viajero"], 3000, 200, ["primerMuseo", "segundoMuseo", "tercerMuseo"])
+	
+		primerTurbina = new Turbina(10000)
+		segundaTurbina = new Turbina(40000)
+		avion = new Avion(10,#{primerTurbina, segundaTurbina})
+		micro = new Micro(20)
+		tren = new Tren(30)
+		titanic = new Barco(40, 99)
+		
+		pHari = new Usuario("Pablo Hari", 17000,#{},[],primerCiudadHistorica, perfilFamiliar)
+		
+	}
+	
+	test "playa nunca es peligrosa." {
+		assert.notThat(playa.esPeligroso())
+	}
+	
+	test "primerMontania no es peligrosa ya que tiene una altura de 4000 metros, 
+		manteniendo la vacuna"{
+		assert.notThat(primerMontania.esPeligroso())	
+	}
+	
+	test "segundaMontania es peligrosa ya que tiene una altura de 5001 metros, 
+		manteniendo la vacuna"{
+		assert.that(segundaMontania.esPeligroso())	
+	}
+	
+	test "primerCiudadHistorica es peligrosa ya que no se tiene asistencia al viajero entre
+		sus equipajes imprescindibles."{
+		assert.that(primerCiudadHistorica.esPeligroso())	
+	}
+	
+	test "segundaCiudadHistorica no es peligrosa ya que se tiene asistencia al viajero entre
+		sus equipajes imprescindibles."{
+		assert.notThat(segundaCiudadHistorica.esPeligroso())	
+	}
+	
+	test "primerMontania es siempre destino destacado."{
+		assert.that(primerMontania.esDestacado())
+	}
+	
+	test "segundaMontania es siempre destino destacado."{
+		assert.that(segundaMontania.esDestacado())
+	}
+	
+	test "primerCiudadHistorica no es destacado a pesar de tener un precio mayor a 2000
+		ya que no tiene 3 o mas museos"{
+		assert.notThat(primerCiudadHistorica.esDestacado())			
+	}
+	
+	test "segundaCiudadHistorica es destacado porque tiene un precio mayor a 2000
+		y tiene 3 o mas museos"{
+		assert.that(segundaCiudadHistorica.esDestacado())			
+	}
+	
+	test "avion tiene un costo por kilometro de 50000, ya que primerTurbina tiene un nivel de
+		impulso de 10000 y segundaTurbina tiene un nivel de impulso de 40000"{
+		assert.equals(50000, avion.costoKilometro())	
+	}
+	
+	test "el costo por kilómetro de micro es siempre 5000."{
+		assert.equals(5000, micro.costoKilometro())
+	}
+	
+	test "el costo por milla de tren es siempre de 2300"{
+		assert.equals(2300, tren.costoMilla())
+	}
+	
+	test "el costo por kilometro es siempre de 1429.151"{
+		assert.equals(1429.151, tren.costoKilometro())
+	}
+	
+	test "el titanic cuenta con una probabilidad de chocar un iceberg del 99%"{
+		assert.equals(99, titanic.probabilidadDeChocarConUnIceberg())
+	}
+	
+	test "el titanic tiene un costo por kilometro de 99000"{
+		assert.equals(99000, titanic.costoKilometro())
+	}
+	
+	test "perfilFamiliar selecciona cualquier medio de transporte ya que lo importante
+		es la familia"{
+		assert.that([avion,micro,tren,titanic].contains(perfilFamiliar.elegirMedioDeTransporte([avion,micro,tren,titanic],0,0)))
+	}
+	
+	test "perfilEmpresarial selecciona avion como medio de transporte ya que el tiempo
+	 	es dinero"{
+		assert.equals(avion, perfilEmpresarial.elegirMedioDeTransporte([avion,micro,tren,titanic],0,0)) 		
+	}
+	
+	test "perfilEstudiantil selecciona tren como medio de transporte ya que su 
+		elección al medio de transporte más rápido dentro de los que su presupuesto 
+		les permite costear."{
+		assert.equals(tren, perfilEstudiantil.elegirMedioDeTransporte([avion,micro,tren,titanic], 10, 15000))
+	}
+	
+	test "pHari al tener un perfilFamiliar y pedir que le armen un viaje a segundaCiudadHistorica
+		elige cualquier medio de transporte"{
+		barrileteCosmico.agregarMedioDeTransporte(avion)
+		barrileteCosmico.agregarMedioDeTransporte(micro)
+		barrileteCosmico.agregarMedioDeTransporte(tren)
+		barrileteCosmico.agregarMedioDeTransporte(titanic)
+		const viajeASegundaCiudadHistorica = barrileteCosmico.armarViaje(pHari, segundaCiudadHistorica)
+		assert.that(#{avion,micro,tren,titanic}.contains(viajeASegundaCiudadHistorica.medioDeTransporte()))
+	}
+	
+	test "pHari al tener un perfilEmpresarial y pedir que le armen un viaje a segundaCiudadHistorica
+		elige avion, ya que es el medio de transporte mas rapido"{
+		barrileteCosmico.agregarMedioDeTransporte(avion)
+		barrileteCosmico.agregarMedioDeTransporte(micro)
+		barrileteCosmico.agregarMedioDeTransporte(tren)
+		barrileteCosmico.agregarMedioDeTransporte(titanic)
+		pHari.perfil(perfilEmpresarial)
+		const viajeASegundaCiudadHistorica = barrileteCosmico.armarViaje(pHari, segundaCiudadHistorica)
+		assert.equals(avion,viajeASegundaCiudadHistorica.medioDeTransporte())
+	}
+	
+	test "pHari al tener un perfilEstudiantily pedir que le armen un viaje a segundaCiudadHistorica
+		elige tren, ya que es el medio de transporte mas rapido que su presupuesto le puede costear"{	
+		barrileteCosmico.agregarMedioDeTransporte(avion)
+		barrileteCosmico.agregarMedioDeTransporte(micro)
+		barrileteCosmico.agregarMedioDeTransporte(tren)
+		barrileteCosmico.agregarMedioDeTransporte(titanic)
+		pHari.perfil(perfilEstudiantil)
+		const viajeASegundaCiudadHistorica = barrileteCosmico.armarViaje(pHari, segundaCiudadHistorica)
+		assert.equals(tren,viajeASegundaCiudadHistorica.medioDeTransporte())	
+	}
+	
+}

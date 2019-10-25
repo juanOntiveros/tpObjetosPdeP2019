@@ -41,8 +41,9 @@ object barrileteCosmico{
     method obtenerLosKilometrosDe(usuario) = usuario.obtenerKilometros()
     
     method armarViaje(usuario, destino){
-    	const medioDeTransporte = mediosDeTransporte.anyOne()
     	const origen = usuario.origen()
+    	const distanciaADestino = origen.distanciaA(destino)
+    	const medioDeTransporte = usuario.elegirMedioDeTransporte(mediosDeTransporte, distanciaADestino)
     	return new Viaje(origen, destino, medioDeTransporte) 
     }
     
