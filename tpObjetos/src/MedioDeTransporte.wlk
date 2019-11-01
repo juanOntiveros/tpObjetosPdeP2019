@@ -2,17 +2,15 @@ import Turbina.*
 
 class MedioDeTransporte{
 		
-	var cuantoTarda	
-	var costoKilometro
+	var cuantoTarda
 	
-	constructor(tiempo, costo){
+	constructor(tiempo){
 		cuantoTarda = tiempo
-		costoKilometro = costo
 	}
 	
 	method cuantoTarda() = cuantoTarda
 	
-	method costoKilometro() = costoKilometro
+	method costoKilometro()
 	
 	method costoDeLaDistanciaARecorrer(unaDistancia) = unaDistancia * self.costoKilometro()
 	
@@ -22,7 +20,7 @@ class Avion inherits MedioDeTransporte {
 	
 	var property turbinas
 	
-	constructor(tiempo, unasTurbinas) = super(tiempo, 0){
+	constructor(tiempo, unasTurbinas) = super(tiempo){
 		turbinas = unasTurbinas
 	}
 	
@@ -38,7 +36,7 @@ class Avion inherits MedioDeTransporte {
 
 class Micro inherits MedioDeTransporte {
 	
-	constructor(tiempo) = super(tiempo, 0){}
+	constructor(tiempo) = super(tiempo){}
 	
 	override method costoKilometro(){
 		return 5000
@@ -48,7 +46,7 @@ class Micro inherits MedioDeTransporte {
 
 class Tren inherits MedioDeTransporte{
 	
-	constructor(tiempo) = super(tiempo, 0){}
+	constructor(tiempo) = super(tiempo){}
 	
 	override method costoKilometro(){
 		return 0.621371 * self.costoMilla()
@@ -68,7 +66,7 @@ class Barco inherits MedioDeTransporte {
 	
 	var property probabilidadDeChocarConUnIceberg
 	
-	constructor(tiempo, unaProbabilidad) = super(tiempo, 0){
+	constructor(tiempo, unaProbabilidad) = super(tiempo){
 		probabilidadDeChocarConUnIceberg = unaProbabilidad
 	}
 	
