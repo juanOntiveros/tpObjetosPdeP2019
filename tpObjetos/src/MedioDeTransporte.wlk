@@ -3,16 +3,16 @@ import Turbina.*
 class MedioDeTransporte{
 		
 	var cuantoTarda	
-	var costoPorUnidadDeLongitud
+	var costoKilometro
 	
 	constructor(tiempo, costo){
 		cuantoTarda = tiempo
-		costoPorUnidadDeLongitud = costo
+		costoKilometro = costo
 	}
 	
 	method cuantoTarda() = cuantoTarda
 	
-	method costoKilometro() = costoPorUnidadDeLongitud  // El costo se calcula directamente por kilometro
+	method costoKilometro() = costoKilometro
 	
 	method costoDeLaDistanciaARecorrer(unaDistancia) = unaDistancia * self.costoKilometro()
 	
@@ -38,20 +38,24 @@ class Avion inherits MedioDeTransporte {
 
 class Micro inherits MedioDeTransporte {
 	
-	constructor(tiempo) = super(tiempo, 5000){}
+	constructor(tiempo) = super(tiempo, 0){}
+	
+	override method costoKilometro(){
+		return 5000
+	}
 	
 }
 
 class Tren inherits MedioDeTransporte{
 	
-	constructor(tiempo) = super(tiempo, 2300){}		// 2300 costo por milla
+	constructor(tiempo) = super(tiempo, 0){}
 	
 	override method costoKilometro(){
-		return 0.621371 * costoPorUnidadDeLongitud
+		return 0.621371 * self.costoMilla()
 	}
 	
 	method costoMilla(){
-		return costoPorUnidadDeLongitud
+		return 2300
 	}
 	
 	// 0.621371 milla es 1 km por lo tanto si multiplico el costo por milla por 0.621371 

@@ -40,6 +40,10 @@ describe "Tests sobre la segunda entrega del TP de Objetos"{
 		
 		pHari = new Usuario("Pablo Hari", 17000,#{},[],primerCiudadHistorica, perfilFamiliar)
 		
+		barrileteCosmico.agregarMedioDeTransporte(avion)
+		barrileteCosmico.agregarMedioDeTransporte(micro)
+		barrileteCosmico.agregarMedioDeTransporte(tren)
+		barrileteCosmico.agregarMedioDeTransporte(titanic)
 	}
 	
 	test "playa nunca es peligrosa." {
@@ -127,20 +131,12 @@ describe "Tests sobre la segunda entrega del TP de Objetos"{
 	
 	test "pHari al tener un perfilFamiliar y pedir que le armen un viaje a segundaCiudadHistorica
 		elige cualquier medio de transporte"{
-		barrileteCosmico.agregarMedioDeTransporte(avion)
-		barrileteCosmico.agregarMedioDeTransporte(micro)
-		barrileteCosmico.agregarMedioDeTransporte(tren)
-		barrileteCosmico.agregarMedioDeTransporte(titanic)
 		const viajeASegundaCiudadHistorica = barrileteCosmico.armarViaje(pHari, segundaCiudadHistorica)
 		assert.that(#{avion,micro,tren,titanic}.contains(viajeASegundaCiudadHistorica.medioDeTransporte()))
 	}
 	
 	test "pHari al tener un perfilEmpresarial y pedir que le armen un viaje a segundaCiudadHistorica
 		elige avion, ya que es el medio de transporte mas rapido"{
-		barrileteCosmico.agregarMedioDeTransporte(avion)
-		barrileteCosmico.agregarMedioDeTransporte(micro)
-		barrileteCosmico.agregarMedioDeTransporte(tren)
-		barrileteCosmico.agregarMedioDeTransporte(titanic)
 		pHari.perfil(perfilEmpresarial)
 		const viajeASegundaCiudadHistorica = barrileteCosmico.armarViaje(pHari, segundaCiudadHistorica)
 		assert.equals(avion,viajeASegundaCiudadHistorica.medioDeTransporte())
@@ -148,10 +144,6 @@ describe "Tests sobre la segunda entrega del TP de Objetos"{
 	
 	test "pHari al tener un perfilEstudiantily pedir que le armen un viaje a segundaCiudadHistorica
 		elige tren, ya que es el medio de transporte mas rapido que su presupuesto le puede costear"{	
-		barrileteCosmico.agregarMedioDeTransporte(avion)
-		barrileteCosmico.agregarMedioDeTransporte(micro)
-		barrileteCosmico.agregarMedioDeTransporte(tren)
-		barrileteCosmico.agregarMedioDeTransporte(titanic)
 		pHari.perfil(perfilEstudiantil)
 		const viajeASegundaCiudadHistorica = barrileteCosmico.armarViaje(pHari, segundaCiudadHistorica)
 		assert.equals(tren,viajeASegundaCiudadHistorica.medioDeTransporte())	
